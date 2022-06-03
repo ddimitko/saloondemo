@@ -20,7 +20,7 @@
         <li class="nav-item">
             <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" th:text="${#authentication.getPrincipal().getFullName()}"></a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
                 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
@@ -38,25 +38,35 @@
                     <h6 class="card-subtitle mb-2 text-muted" th:text="${shopInfo.type.name}"></h6>
                     <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                     <p class="card-text"><small class="text-muted" th:text="${shopInfo.city.name}"></small></p>
-                    <div class="d-flex justify-content-center">
-                            <form method="post" th:action="@{/book(shopId=${shopInfo.id}, userId=${#authentication.getPrincipal().getId()})}" th:object="${booking}">
-                                <select class="form-control text-center" th:field="*{service}">
-                                    <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.name}"></option>
-                                </select>
-                                <input type="datetime-local" th:field="*{fromDate}">
-                                <input type="submit" value="Book Now">
-                            </form>
+                    <p class="card-text"><small class="text-muted" th:text="'Schedule: ' + ${shopInfo.openTime} + ' ' + '-' + ' ' + ${shopInfo.closeTime}"></small></p>
+                    <h6 class="card-subtitle mb-2 text-muted">Available slots</h6>
+                    <div class="container-fluid">
+                        <div class="row row-cols-auto justify-content-center">
+                        <div class="col" th:each="list : ${schedule}">
+                            <!--<div class="col" th:each="list : ${schedule}">
+                                <p class="text-muted"  th:text="${list.key}"></p>
+                                <form method="post" th:each="schedules : ${list.value}">
+                                <button type="button" class="btn btn-secondary my-1" th:text="${schedules.toString()}"></button>
+                                </form>
+                            </div>-->
+                                <!--<p class="text-muted"  th:text="${list.key}"></p>-->
+                                <form method="post" th:action="@{/book}" th:object="${booking}">
+                                    <button type="submit" class="btn btn-secondary my-2" th:text="${list}"></button>
+                                    <input type="hidden" th:value="${list}" th:attr="name='fromDate'"/>
+                                    <input type="hidden" th:value="${shopInfo.id}" th:attr="name='shopId'"/>
+                                    <input type="hidden" th:value="${#authentication.getPrincipal().getId()}" th:attr="name='userId'"/>
+                                    <input type="hidden" th:value="1" th:attr="name='serviceId'"/>
+                                </form>
+                        </div>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <form method="post" th:action="@{/addSchedule(shopId=${shopInfo.id})}" th:object="${daySchedule}">
-                            <input type="time" th:field="*{startDate}">
-                            <input type="time" th:field="*{endDate}">
-                            <input type="submit" value="Set">
-                        </form>
-                    </div>
-
                 </div>
+
             </div>
+            <!--<div class="card-body" th:each="free : ${shopInfo.schedule}">
+                <span th:text="${free.key}">Key</span>
+                <span th:text="${free.value}">Value</span>
+            </div>-->
         </div>
     </div>
 

@@ -51,6 +51,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/home").authenticated()
                 .antMatchers("/shops").authenticated()
                 .antMatchers("/shop").authenticated()
+                .antMatchers("/addShop").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

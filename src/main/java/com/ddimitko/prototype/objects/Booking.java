@@ -16,18 +16,13 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne
-    private Services service;
+    private Long serviceId;
 
-    @ManyToOne
-    private Shop shop;
+    private Long shopId;
 
-    @ManyToOne
-    private User user;
+    private Long userId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime fromDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime toDate;
+    /*@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime fromDate;*/
 }

@@ -43,6 +43,11 @@ public class UserService {
         return principal.getFullName();
     }
 
+    public Long getId(Authentication authentication){
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        return principal.getId();
+    }
+
     public Optional<User> findById(Long id){
         return repo.findById(id);
     }

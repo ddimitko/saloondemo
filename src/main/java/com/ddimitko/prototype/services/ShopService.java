@@ -1,16 +1,11 @@
 package com.ddimitko.prototype.services;
 
-import com.ddimitko.prototype.objects.DaySchedule;
 import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.objects.WeekSchedule;
-import com.ddimitko.prototype.repositories.DayScheduleRepository;
 import com.ddimitko.prototype.repositories.ShopRepository;
-import com.ddimitko.prototype.repositories.WeekScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ShopService {
@@ -28,7 +23,10 @@ public class ShopService {
     }
 
     public Shop addShop(Shop shop){
+
         return repo.save(shop);
     }
+
+
 
 }

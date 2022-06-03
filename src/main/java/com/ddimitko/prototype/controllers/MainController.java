@@ -1,9 +1,7 @@
 package com.ddimitko.prototype.controllers;
 
 import com.ddimitko.prototype.objects.Booking;
-import com.ddimitko.prototype.objects.DaySchedule;
 import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.objects.WeekSchedule;
 import com.ddimitko.prototype.services.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,11 +38,12 @@ public class MainController {
 
         Shop shop = shopService.findById(id).get();
 
+        shop.addDaySchedule(shop.getOpenTime(), shop.getCloseTime());
+
         model.addAttribute("shopInfo", shop);
+        model.addAttribute("schedule", shop.getSlots());
         model.addAttribute("booking", new Booking());
         model.addAttribute("services", shop.getServices());
-        model.addAttribute("daySchedule", new DaySchedule());
-        model.addAttribute("weekSchedule", new WeekSchedule());
 
         return "shopProfile";
     }

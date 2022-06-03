@@ -2,7 +2,6 @@ package com.ddimitko.prototype.controllers;
 
 import com.ddimitko.prototype.objects.Booking;
 import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.objects.User;
 import com.ddimitko.prototype.services.BookingService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
@@ -24,15 +23,12 @@ public class BookingController {
     BookingService bookingService;
 
     @PostMapping("/book")
-    public String book(@RequestParam Long shopId, @RequestParam Long userId, Booking booking) throws Exception {
+    public String book(@RequestParam Long shopId, @RequestParam Long userId, @RequestParam Long serviceId, Booking booking) throws Exception {
 
         Shop shop = shopService.findById(shopId).get();
+        /*shop.getSchedule();*/
 
-        User user = userService.findById(userId).get();
-
-        booking.setUser(user);
-
-        bookingService.createBooking(shop, booking);
+        bookingService.createBooking(shopId, userId, serviceId, booking);
 
         return "redirect:/shops";
     }

@@ -1,12 +1,13 @@
 package com.ddimitko.prototype.controllers;
 
-import com.ddimitko.prototype.objects.DaySchedule;
 import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.objects.WeekSchedule;
-import com.ddimitko.prototype.services.ScheduleService;
+import com.ddimitko.prototype.services.CityService;
 import com.ddimitko.prototype.services.ShopService;
+import com.ddimitko.prototype.services.ShopTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,19 +18,36 @@ public class ShopController {
     ShopService shopService;
 
     @Autowired
-    ScheduleService scheduleService;
+    CityService cityService;
+
+    @Autowired
+    ShopTypeService typeService;
+
+    @GetMapping("/addShop")
+    public String showAddShop(Model model){
+
+        model.addAttribute("shop", new Shop());
+        model.addAttribute("city", cityService.findAll());
+        model.addAttribute("type", typeService.findAll());
+
+        return "addShop";
+    }
 
     @PostMapping("/addSchedule")
-    public String addSchedule(@RequestParam Long shopId, DaySchedule daySchedule, WeekSchedule weekSchedule){
+    public String addSchedule(@RequestParam Long shopId){
 
         Shop shop = shopService.findById(shopId).get();
 
-        scheduleService.createDaySchedule(daySchedule);
-
-        scheduleService.createWeekSchedule(shop, daySchedule, weekSchedule);
-
         return "redirect:/shops";
 
+    }
+
+    @PostMapping("/process_addShop")
+    public String processAddShop(Shop shop){
+
+        shopService.addShop(shop);
+
+        return "redirect:/shops";
     }
 
 }
