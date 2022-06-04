@@ -42,22 +42,4 @@ public class Shop {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime closeTime;
 
-    @Transient
-    private ArrayList<LocalTime> slots = new ArrayList<>();
-
-    public void addDaySchedule(LocalTime open, LocalTime close){
-
-        LocalTime openTime = open;
-        LocalTime closeTime = close;
-
-        slots.add(openTime);
-
-        LocalTime workTime = openTime;
-
-        while(workTime.isBefore(closeTime) && workTime.plusMinutes(25).isBefore(closeTime)){
-            slots.add(workTime.plusMinutes(25));
-            workTime = workTime.plusMinutes(25);
-        }
-    }
-
 }

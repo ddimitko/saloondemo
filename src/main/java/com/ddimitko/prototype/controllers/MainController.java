@@ -38,10 +38,9 @@ public class MainController {
 
         Shop shop = shopService.findById(id).get();
 
-        shop.addDaySchedule(shop.getOpenTime(), shop.getCloseTime());
+        /*shop.addDaySchedule(shop.getOpenTime(), shop.getCloseTime());*/
 
         model.addAttribute("shopInfo", shop);
-        model.addAttribute("schedule", shop.getSlots());
         model.addAttribute("booking", new Booking());
         model.addAttribute("services", shop.getServices());
 

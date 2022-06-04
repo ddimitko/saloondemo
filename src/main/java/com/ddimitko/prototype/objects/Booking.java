@@ -5,7 +5,9 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -23,6 +25,9 @@ public class Booking {
     private Long userId;
 
 
-    /*@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime fromDate;*/
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dayDate;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime timeDate;
 }
