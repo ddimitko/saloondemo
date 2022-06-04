@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class BookingService {
 
     public ArrayList addSlots(Shop shop, Services service, LocalDate date, LocalTime open, LocalTime close){
 
-        List<Booking> bookings = shop.getBookings();
+        List<Booking> bookings = repo.findByShopIdAndDayDate(shop.getId(), date);
         ArrayList<LocalTime> slots = new ArrayList<>();
         Integer length = service.getLengthInMinutes();
 
@@ -60,13 +61,17 @@ public class BookingService {
         }
 
         //DOES NOT WORK
-        for(LocalTime time : slots){
+        /*for(LocalTime time : slots){
             for(Booking bookingList : bookings){
                 LocalTime reserved = bookingList.getTimeDate();
                 if(time.equals(reserved)){
                     slots.remove(time);
                 }
             }
+        }*/
+
+        for(Booking book : bookings){
+            slots.removeIf(book.getTimeDate()::equals);
         }
 
         return slots;
