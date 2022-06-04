@@ -7,6 +7,7 @@ import com.ddimitko.prototype.repositories.ServicesRepository;
 import com.ddimitko.prototype.services.BookingService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -31,16 +32,24 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
+    // TODO fix
     @Autowired
     ServicesRepository servicesRepository;
 
     @GetMapping("/book")
     public String showAvailableBookings(@RequestParam Long shopId, @RequestParam Long serviceId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Model model){
 
-        Shop shop = shopService.findById(shopId).get();
-        Services service = servicesRepository.findById(serviceId).get();
+        Shop shop = new Shop();
+        if (shopService.findById(shopId).isPresent()) {
+           shop = shopService.findById(shopId).get();
+        }
 
-        ArrayList<LocalTime> slots = bookingService.addSlots(shop, service, date, shop.getOpenTime(), shop.getCloseTime());
+        Services service = new Services();
+        if (servicesRepository.findById(serviceId).isPresent()) {
+            service = servicesRepository.findById(serviceId).get();
+        }
+
+        List<LocalTime> slots = bookingService.addSlots(shop, service, date, shop.getOpenTime(), shop.getCloseTime());
 
         model.addAttribute("shopInfo", shop);
         model.addAttribute("date", date);
