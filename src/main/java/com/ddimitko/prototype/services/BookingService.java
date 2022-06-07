@@ -20,6 +20,7 @@ public class BookingService {
     @Autowired
     BookingRepository repo;
 
+
     public List<Booking> findAll(){
         return repo.findAll();
     }

@@ -30,22 +30,23 @@
         </li>
     </ul>
 
-    <div class="container-fluid">
-
-
-
-        <div class="row row-cols-auto justify-content-center">
-            <div class="col" th:each="list : ${slots}">
-                <form method="post" th:action="@{/book}" th:object="${booking}">
-                    <button type="submit" class="btn btn-secondary my-2" th:text="${list}"></button>
-                    <input type="hidden" th:value="${date}" th:attr="name='dayDate'">
-                    <input type="hidden" th:value="${list}" th:attr="name='timeDate'"/>
-                    <input type="hidden" th:value="${shopInfo.id}" th:attr="name='shopId'"/>
-                    <input type="hidden" th:value="${#authentication.getPrincipal().getId()}" th:attr="name='userId'"/>
-                    <input type="hidden" th:value="${serviceId}" th:attr="name='serviceId'"/>
-                </form>
-            </div>
+    <div class="container-fluid justify-content-center">
+        <br>
+        <div class="d-flex justify-content-center">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email address</label>
+            <input type="text" readonly class="form-control-plaintext w-25" id="staticEmail" th:text="${#authentication.getPrincipal().getUsername()}">
         </div>
+        <form method="post" th:action="@{/editProfile(email=${#authentication.getPrincipal().getUsername()})}" th:object="${user}">
+            <div class="d-flex justify-content-center">
+                <input class="form-control form-control-sm w-25" type="password" th:name="oldPass" required minlength="8" aria-label=".form-control-sm example">
+            </div>
+            <div class="d-flex justify-content-center">
+                <input class="form-control form-control-sm w-25" type="password" th:name="newPass" required minlength="8" aria-label=".form-control-sm example">
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-dark">Edit</button>
+            </div>
+        </form>
     </div>
 
 </body>

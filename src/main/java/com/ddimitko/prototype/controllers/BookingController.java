@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class BookingController {
@@ -32,10 +33,6 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
-    // TODO fix
-    @Autowired
-    ServicesRepository servicesRepository;
-
     @GetMapping("/book")
     public String showAvailableBookings(@RequestParam Long shopId, @RequestParam Long serviceId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Model model){
 
@@ -45,8 +42,8 @@ public class BookingController {
         }
 
         Services service = new Services();
-        if (servicesRepository.findById(serviceId).isPresent()) {
-            service = servicesRepository.findById(serviceId).get();
+        if (shopService.findByServiceId(serviceId).isPresent()) {
+            service = shopService.findByServiceId(serviceId).get();
         }
 
         List<LocalTime> slots = bookingService.addSlots(shop, service, date, shop.getOpenTime(), shop.getCloseTime());
@@ -54,14 +51,13 @@ public class BookingController {
         model.addAttribute("shopInfo", shop);
         model.addAttribute("date", date);
         model.addAttribute("slots", slots);
+        model.addAttribute("serviceId", serviceId);
 
         return "available";
     }
 
     @PostMapping("/book")
     public String book(@RequestParam Long shopId, @RequestParam Long userId, @RequestParam Long serviceId, Booking booking) throws Exception {
-
-        /*shop.getSchedule();*/
 
         bookingService.createBooking(shopId, userId, serviceId, booking);
 

@@ -71,4 +71,25 @@ public class UserService {
 
     }
 
+    public User updateUser(String email, String oldPassword, String newPassword){
+
+        User user;
+        if(repo.findByEmail(email).isPresent()){
+            user = repo.findByEmail(email).get();
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if(passwordEncoder.matches(oldPassword, user.getPassword())){
+                String encodedNewPassword = passwordEncoder.encode(newPassword);
+                user.setPassword(encodedNewPassword);
+            }
+
+            return repo.save(user);
+        }
+        else{
+            throw new NullPointerException();
+        }
+
+
+    }
+
 }

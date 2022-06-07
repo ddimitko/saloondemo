@@ -36,9 +36,11 @@ public class MainController {
     @GetMapping("/shop")
     private String viewShop(@RequestParam Long id, Model model){
 
-        Shop shop = shopService.findById(id).get();
+        Shop shop = new Shop();
 
-        /*shop.addDaySchedule(shop.getOpenTime(), shop.getCloseTime());*/
+        if(shopService.findById(id).isPresent()){
+            shop = shopService.findById(id).get();
+        }
 
         model.addAttribute("shopInfo", shop);
         model.addAttribute("booking", new Booking());
