@@ -25,6 +25,11 @@ public class BookingService {
         return repo.findAll();
     }
 
+    public List<Booking> findAllByUserId(Long userId){
+
+        return repo.findAllByUserId(userId);
+    }
+
     public Optional<Booking> findById(Long id){
         return repo.findById(id);
     }
@@ -40,6 +45,13 @@ public class BookingService {
 
     }
 
+    public void deleteBooking(Booking booking){
+
+        if(repo.existsById(booking.getId())){
+            repo.delete(booking);
+        }
+
+    }
 
     public List<LocalTime> addSlots(Shop shop, Services service, LocalDate date, LocalTime open, LocalTime close){
 

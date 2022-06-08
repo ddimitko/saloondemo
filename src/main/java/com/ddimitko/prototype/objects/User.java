@@ -26,4 +26,7 @@ public class User {
     @NotNull
     private String password;
 
+    @OneToMany(mappedBy = "userId")
+    private List<Booking> bookings;
+
 }
