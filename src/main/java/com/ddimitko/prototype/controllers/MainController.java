@@ -33,19 +33,4 @@ public class MainController {
         return "shops";
     }
 
-    @GetMapping("/shop")
-    private String viewShop(@RequestParam Long id, Model model){
-
-        Shop shop = new Shop();
-
-        if(shopService.findById(id).isPresent()){
-            shop = shopService.findById(id).get();
-        }
-
-        model.addAttribute("shopInfo", shop);
-        model.addAttribute("booking", new Booking());
-        model.addAttribute("services", shop.getServices());
-
-        return "shopProfile";
-    }
 }

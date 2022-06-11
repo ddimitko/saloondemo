@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,13 +62,17 @@ public class BookingService {
 
         LocalTime workTime = open;
 
-        while(workTime.isBefore(close) && workTime.plusMinutes(length).isBefore(close)){
-            slots.add(workTime.plusMinutes(length));
-            workTime = workTime.plusMinutes(length);
-        }
+        if(!date.isBefore(LocalDate.now())) {
 
-        for(Booking book : bookings){
-            slots.removeIf(book.getTimeDate()::equals);
+            while (workTime.isBefore(close) && workTime.plusMinutes(length).isBefore(close)) {
+                    slots.add(workTime.plusMinutes(length));
+                    workTime = workTime.plusMinutes(length);
+            }
+
+            for (Booking book : bookings) {
+                slots.removeIf(book.getTimeDate()::equals);
+            }
+
         }
 
         return slots;

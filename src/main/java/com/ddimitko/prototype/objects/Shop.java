@@ -36,6 +36,14 @@ public class Shop {
     @OneToMany(mappedBy = "shopId")
     private List<Booking> bookings;
 
+    @OneToMany
+    @JoinTable(
+            name = "shop_staff",
+            joinColumns = @JoinColumn(name = "shop_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> staff;
+
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime openTime;
 

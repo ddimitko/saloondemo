@@ -20,7 +20,8 @@
         <li class="nav-item">
             <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" th:text="${#authentication.getPrincipal().getFullName()}"></a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                <li><a class="dropdown-item" th:href="@{/editProfile(userId=${#authentication.getPrincipal().getId()})}">Edit Profile</a></li>
+                <li><a class="dropdown-item" th:href="@{/viewBookings(userId=${#authentication.getPrincipal().getId()})}">Recent Appointments</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
                 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
@@ -40,14 +41,19 @@
                     <p class="card-text"><small class="text-muted" th:text="${shopInfo.city.name}"></small></p>
                     <p class="card-text"><small class="text-muted" th:text="'Schedule: ' + ${shopInfo.openTime} + ' ' + '-' + ' ' + ${shopInfo.closeTime}"></small></p>
                     <h6 class="card-subtitle mb-2 text-muted">Book now!</h6>
-                    <div class="container-fluid">
+                    <div class="container-fluid justify-content-center">
                         <form method="get" th:action="@{/book}">
                             <input type="hidden" th:name="shopId" th:value="${shopInfo.id}">
                             <input type="date" th:name="date">
+                            <div class="d-flex justify-content-center mt-2 mb-2">
                             <select class="form-control form-control-sm w-25 text-center" th:name="serviceId">
                                 <option th:each="service : ${shopInfo.services}" th:value="${service.id}" th:text="${service.name}"></option>
                             </select>
-                            <input type="submit">
+                                <select class="form-control form-control-sm w-25 text-center" th:name="serviceId">
+                                    <option th:each="staff : ${shopInfo.staff}" th:value="${staff.id}" th:text="${staff.firstName}"></option>
+                                </select>
+                            </div>
+                            <input type="submit" class="btn btn-dark" value="Book">
                         </form>
                     </div>
                     <!--<div class="container-fluid">

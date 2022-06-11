@@ -1,9 +1,11 @@
 package com.ddimitko.prototype.controllers;
 
+import com.ddimitko.prototype.objects.Booking;
 import com.ddimitko.prototype.objects.Shop;
 import com.ddimitko.prototype.services.CityService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.ShopTypeService;
+import com.ddimitko.prototype.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,26 @@ public class ShopController {
     @Autowired
     ShopTypeService typeService;
 
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/shop")
+    private String viewShop(@RequestParam Long id, Model model){
+
+        Shop shop = new Shop();
+
+        if(shopService.findById(id).isPresent()){
+            shop = shopService.findById(id).get();
+        }
+
+        model.addAttribute("shopInfo", shop);
+        model.addAttribute("booking", new Booking());
+        model.addAttribute("services", shop.getServices());
+        model.addAttribute("staff", shop.getStaff());
+
+        return "shopProfile";
+    }
+
     @GetMapping("/addShop")
     public String showAddShop(Model model){
 
@@ -33,10 +55,20 @@ public class ShopController {
         return "addShop";
     }
 
-    @PostMapping("/addSchedule")
-    public String addSchedule(@RequestParam Long shopId){
+    @GetMapping("/addStaff")
+    public String showAddStaff(Model model){
 
-        Shop shop = shopService.findById(shopId).get();
+        model.addAttribute("staff", userService.findAll());
+        model.addAttribute("shop", shopService.findAll());
+
+        return "addStaff";
+
+    }
+
+    @PostMapping("/process_addStaff")
+    public String processAddStaff(@RequestParam Long shopId, @RequestParam Long userId){
+
+        shopService.addStaff(shopId, userId);
 
         return "redirect:/shops";
 

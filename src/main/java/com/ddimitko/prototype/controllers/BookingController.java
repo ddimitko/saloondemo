@@ -3,7 +3,6 @@ package com.ddimitko.prototype.controllers;
 import com.ddimitko.prototype.objects.Booking;
 import com.ddimitko.prototype.objects.Services;
 import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.repositories.ServicesRepository;
 import com.ddimitko.prototype.services.BookingService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class BookingController {
@@ -45,6 +42,7 @@ public class BookingController {
         if (shopService.findByServiceId(serviceId).isPresent()) {
             service = shopService.findByServiceId(serviceId).get();
         }
+
 
         List<LocalTime> slots = bookingService.addSlots(shop, service, date, shop.getOpenTime(), shop.getCloseTime());
 
