@@ -24,6 +24,8 @@ public class Booking {
 
     private Long userId;
 
+    private String username;
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dayDate;

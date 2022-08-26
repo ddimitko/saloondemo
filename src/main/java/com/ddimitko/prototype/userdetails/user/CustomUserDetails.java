@@ -1,10 +1,13 @@
-package com.ddimitko.prototype.userdetails;
+package com.ddimitko.prototype.userdetails.user;
 
 import com.ddimitko.prototype.objects.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -16,7 +19,14 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_WORKER");
+
+        authorities.add(authority);
+
+        return authorities;
     }
 
     @Override
@@ -26,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getStaffId();
     }
 
     @Override
@@ -49,15 +59,15 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public Long getId(){
-        return user.getId();
-    }
-
     public String getFullName() {
         return user.getFirstName() + " " + user.getLastName();
     }
 
     public String getFirstName() {
         return user.getFirstName();
+    }
+
+    public String getStaffId() {
+        return user.getStaffId();
     }
 }

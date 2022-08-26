@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -45,33 +44,13 @@ public class ShopService {
     public Shop addShop(Shop shop){
 
         if(!shop.getName().equals(null) && !shop.getCity().equals(null) && !shop.getType().equals(null)){
+
             return repo.save(shop);
         }
         else{
             throw new NullPointerException();
         }
 
-
-    }
-
-    @Transactional
-    public void addStaff(Long shopId, Long userId){
-
-        Shop shop = new Shop();
-
-        if(repo.findById(shopId).isPresent()){
-            shop = repo.findById(shopId).get();
-        }
-
-        User user = new User();
-
-        if(userRepo.findById(userId).isPresent()){
-            user = userRepo.findById(userId).get();
-        }
-
-        shop.getStaff().add(user);
-
-        this.entityManager.persist(user);
 
     }
 

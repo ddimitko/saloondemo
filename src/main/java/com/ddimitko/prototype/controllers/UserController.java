@@ -21,7 +21,7 @@ public class UserController {
     @Autowired
     BookingService bookingService;
 
-    @GetMapping("/editProfile")
+    /*@GetMapping("/editProfile")
     public String viewEditProfile(@RequestParam Long userId, Model model){
 
         User user = new User();
@@ -33,18 +33,10 @@ public class UserController {
 
 
         return "editProfile";
-    }
+    }*/
 
     @GetMapping("/viewBookings")
     public String viewBookings(@RequestParam Long userId, Model model){
-
-        User user = new User();
-
-        if(userService.findById(userId).isPresent()){
-            user = userService.findById(userId).get();
-        }
-
-        model.addAttribute("user", user);
 
         List<Booking> bookings = bookingService.findAllByUserId(userId);
         model.addAttribute("bookings", bookings);
@@ -65,7 +57,7 @@ public class UserController {
         return "redirect:/home";
     }
 
-    @PutMapping("/editProfile")
+    /*@PutMapping("/editProfile")
     public String editProfile(@RequestParam String email,
                             @RequestParam(value="oldPass") String oldPassword,
                             @RequestParam(value="newPass") String newPassword){
@@ -74,6 +66,6 @@ public class UserController {
 
         return "redirect:/home";
 
-    }
+    }*/
 
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class SecurityController {
@@ -47,17 +49,23 @@ public class SecurityController {
         return "signup";
     }
 
+    @RequestMapping(value = "/management/login", method = { RequestMethod.GET, RequestMethod.POST })
+    public String showManagementLogin(){
+
+        return "managementLogin";
+    }
+
     @PostMapping("/process_signup")
     public String processSignUp(User user){
 
-        if(userService.findByEmail(user.getEmail()).isEmpty()) {
+        if(!userService.findByStaffId(user.getStaffId()).isPresent()) {
 
             userService.createUser(user);
 
-            return "redirect:/home";
+            return "redirect:/management";
         }
         else {
-            return "signup";
+            return "managementLogin";
         }
 
     }

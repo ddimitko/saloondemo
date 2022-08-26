@@ -18,9 +18,11 @@
             <a class="nav-link active" aria-current="shops" th:href="@{/shops}">Shops</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" th:text="${#authentication.getPrincipal().getFullName()}"></a>
+            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_CUSTOMER')" sec:authentication="name"></a>
+            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_WORKER')" th:text="${#authentication.getPrincipal().getFullName()}"></a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_WORKER')">Go to Management</a></li>
+                <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_CUSTOMER')" th:href="@{/viewBookings(userId=${#authentication.getPrincipal().getId()})}">Recent Appointments</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
                 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
@@ -56,6 +58,14 @@
                     <option th:each="type : ${type}" th:value="${type.id}" th:text="${type.name}"></option>
                 </select>
             </div>
+            <!--<div class="d-flex justify-content-center mt-2">
+                <b>Shop Owner:</b>
+            </div>
+            <div class="d-flex justify-content-center">
+                <select class="form-control form-control-sm w-25 text-center" th:field="*{staff}">
+                    <option th:each="owner : ${staff}" th:value="${owner.staffId}" th:text="${owner.firstName + ' ' + owner.lastName}"></option>
+                </select>
+            </div>-->
             <div class="d-flex justify-content-center mt-2">
                 <b>Shop Work times:</b>
             </div>

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,19 +13,19 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private String staffId;
 
     private String firstName;
     private String lastName;
 
     @NotNull
-    private String email;
-
-    @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "userId")
-    private List<Booking> bookings;
+    @ManyToOne
+    private Shop shop;
+
+    //Working hours for Staff
+    /*private LocalTime startTime;
+    private LocalTime endTime;*/
 
 }

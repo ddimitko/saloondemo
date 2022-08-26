@@ -2,16 +2,18 @@ package com.ddimitko.prototype.services;
 
 import com.ddimitko.prototype.objects.User;
 import com.ddimitko.prototype.repositories.UserRepository;
-import com.ddimitko.prototype.userdetails.CustomUserDetails;
+import com.ddimitko.prototype.userdetails.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -21,16 +23,6 @@ public class UserService {
 
     public List<User> findAll(){
         return repo.findAll();
-    }
-
-    public User getSpecificUser(Authentication authentication) {
-        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-        String email = principal.getUsername();
-        return repo.findByEmail(email).get();
-    }
-
-    public Optional<User> findByEmail(String email){
-        return repo.findByEmail(email);
     }
 
     public String getFirstName(Authentication authentication) {
@@ -43,13 +35,17 @@ public class UserService {
         return principal.getFullName();
     }
 
-    public Long getId(Authentication authentication){
+    public String getId(Authentication authentication){
         CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-        return principal.getId();
+        return principal.getStaffId();
     }
 
     public Optional<User> findById(Long id){
         return repo.findById(id);
+    }
+
+    public Optional<User> findByStaffId(String staffId){
+        return repo.findByStaffId(staffId);
     }
 
     public User createUser(User user){
@@ -61,6 +57,7 @@ public class UserService {
         return repo.save(user);
     }
 
+    /*
     public void removeUser(User user){
 
         Long id = user.getId();
@@ -89,7 +86,7 @@ public class UserService {
             throw new NullPointerException();
         }
 
+    }*/
 
-    }
 
 }

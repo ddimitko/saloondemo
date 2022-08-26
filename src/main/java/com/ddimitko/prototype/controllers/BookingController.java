@@ -3,6 +3,7 @@ package com.ddimitko.prototype.controllers;
 import com.ddimitko.prototype.objects.Booking;
 import com.ddimitko.prototype.objects.Services;
 import com.ddimitko.prototype.objects.Shop;
+import com.ddimitko.prototype.objects.User;
 import com.ddimitko.prototype.services.BookingService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
@@ -31,7 +32,7 @@ public class BookingController {
     BookingService bookingService;
 
     @GetMapping("/book")
-    public String showAvailableBookings(@RequestParam Long shopId, @RequestParam Long serviceId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Model model){
+    public String showAvailableBookings(@RequestParam Long shopId, @RequestParam Long serviceId, @RequestParam String staffId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Model model){
 
         Shop shop = new Shop();
         if (shopService.findById(shopId).isPresent()) {
@@ -43,8 +44,13 @@ public class BookingController {
             service = shopService.findByServiceId(serviceId).get();
         }
 
+        User staff = new User();
+        if(userService.findByStaffId(staffId).isPresent()){
+            staff = userService.findByStaffId(staffId).get();
+        }
 
-        List<LocalTime> slots = bookingService.addSlots(shop, service, date, shop.getOpenTime(), shop.getCloseTime());
+
+        List<LocalTime> slots = bookingService.addSlots(shop, service, staff, date, shop.getOpenTime(), shop.getCloseTime());
 
         model.addAttribute("shopInfo", shop);
         model.addAttribute("date", date);
@@ -55,9 +61,9 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public String book(@RequestParam Long shopId, @RequestParam Long userId, @RequestParam Long serviceId, Booking booking) throws Exception {
+    public String book(@RequestParam Long shopId, @RequestParam Long userId, @RequestParam Long serviceId, @RequestParam String username, Booking booking) throws Exception {
 
-        bookingService.createBooking(shopId, userId, serviceId, booking);
+        bookingService.createBooking(shopId, userId, serviceId, username, booking);
 
         return "redirect:/shops";
     }

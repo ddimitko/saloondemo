@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalTime;
+
 @Controller
 public class ShopController {
 
@@ -51,27 +53,9 @@ public class ShopController {
         model.addAttribute("shop", new Shop());
         model.addAttribute("city", cityService.findAll());
         model.addAttribute("type", typeService.findAll());
+        model.addAttribute("staff", userService.findAll());
 
         return "addShop";
-    }
-
-    @GetMapping("/addStaff")
-    public String showAddStaff(Model model){
-
-        model.addAttribute("staff", userService.findAll());
-        model.addAttribute("shop", shopService.findAll());
-
-        return "addStaff";
-
-    }
-
-    @PostMapping("/process_addStaff")
-    public String processAddStaff(@RequestParam Long shopId, @RequestParam Long userId){
-
-        shopService.addStaff(shopId, userId);
-
-        return "redirect:/shops";
-
     }
 
     @PostMapping("/process_addShop")

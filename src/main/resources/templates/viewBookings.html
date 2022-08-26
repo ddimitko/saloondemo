@@ -18,11 +18,9 @@
             <a class="nav-link" aria-current="shops" th:href="@{/shops}">Shops</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" th:text="${#authentication.getPrincipal().getFullName()}"></a>
+            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authentication="name"></a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" th:href="@{/editProfile(userId=${#authentication.getPrincipal().getId()})}">Edit Profile</a></li>
                 <li><a class="dropdown-item active" th:href="@{/viewBookings(userId=${#authentication.getPrincipal().getId()})}">Recent Appointments</a></li>
-
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
                 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">

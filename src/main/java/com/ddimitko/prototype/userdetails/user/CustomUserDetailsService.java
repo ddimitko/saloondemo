@@ -1,4 +1,4 @@
-package com.ddimitko.prototype.userdetails;
+package com.ddimitko.prototype.userdetails.user;
 
 import com.ddimitko.prototype.objects.User;
 import com.ddimitko.prototype.repositories.UserRepository;
@@ -13,7 +13,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username).get();
+        User user = userRepository.findByStaffId(username).get();
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
