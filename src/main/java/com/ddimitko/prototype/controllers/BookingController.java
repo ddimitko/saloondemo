@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Controller
 public class BookingController {
@@ -50,20 +51,21 @@ public class BookingController {
         }
 
 
-        List<LocalTime> slots = bookingService.addSlots(shop, service, staff, date, shop.getOpenTime(), shop.getCloseTime());
+        List<LocalTime> slots = bookingService.addSlots(service, staff, date);
 
         model.addAttribute("shopInfo", shop);
         model.addAttribute("date", date);
         model.addAttribute("slots", slots);
         model.addAttribute("serviceId", serviceId);
+        model.addAttribute("staffId", staffId);
 
         return "available";
     }
 
     @PostMapping("/book")
-    public String book(@RequestParam Long shopId, @RequestParam Long userId, @RequestParam Long serviceId, @RequestParam String username, Booking booking) throws Exception {
+    public String book(@RequestParam Long shopId, @RequestParam String staffId, @RequestParam Long userId, @RequestParam Long serviceId, @RequestParam String username, Booking booking) throws Exception {
 
-        bookingService.createBooking(shopId, userId, serviceId, username, booking);
+        bookingService.createBooking(shopId, staffId, userId, serviceId, username, booking);
 
         return "redirect:/shops";
     }

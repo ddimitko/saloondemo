@@ -1,6 +1,7 @@
 package com.ddimitko.prototype.controllers;
 
 import com.ddimitko.prototype.objects.User;
+import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,11 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.transaction.Transactional;
+
 @Controller
 public class SecurityController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ShopService shopService;
 
     @GetMapping("/")
     public String landing(Authentication authentication){
@@ -44,9 +50,12 @@ public class SecurityController {
         if(authentication != null){
             return "redirect:/home";
         }
-        model.addAttribute("user", new User());
+        else {
+            model.addAttribute("staff", new User());
+            model.addAttribute("shopList", shopService.findAll());
 
-        return "signup";
+            return "signup";
+        }
     }
 
     @RequestMapping(value = "/management/login", method = { RequestMethod.GET, RequestMethod.POST })
@@ -58,15 +67,9 @@ public class SecurityController {
     @PostMapping("/process_signup")
     public String processSignUp(User user){
 
-        if(!userService.findByStaffId(user.getStaffId()).isPresent()) {
+        userService.createUser(user);
 
-            userService.createUser(user);
-
-            return "redirect:/management";
-        }
-        else {
-            return "managementLogin";
-        }
+        return "redirect:/management";
 
     }
 

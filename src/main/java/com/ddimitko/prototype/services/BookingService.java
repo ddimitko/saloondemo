@@ -5,6 +5,7 @@ import com.ddimitko.prototype.objects.Services;
 import com.ddimitko.prototype.objects.Shop;
 import com.ddimitko.prototype.objects.User;
 import com.ddimitko.prototype.repositories.BookingRepository;
+import com.ddimitko.prototype.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class BookingService {
     @Autowired
     BookingRepository repo;
 
+    @Autowired
+    UserRepository userRepo;
+
 
     public List<Booking> findAll(){
         return repo.findAll();
@@ -34,12 +38,19 @@ public class BookingService {
         return repo.findById(id);
     }
 
-    public Booking createBooking(Long shopId, Long userId, Long serviceId, String username, Booking booking) throws Exception {
+    public Booking createBooking(Long shopId, String staffId, Long userId, Long serviceId, String username, Booking booking) throws Exception {
+
+        User staff = new User();
+        if(userRepo.findByStaffId(staffId).isPresent()){
+            staff = userRepo.findByStaffId(staffId).get();
+        }
 
         booking.setShopId(shopId);
+        booking.setStaffId(staffId);
         booking.setUserId(userId);
         booking.setServiceId(serviceId);
-        booking.setUsername(username);
+        booking.setStaffName(staff.getFirstName() + ' ' + staff.getLastName());
+        booking.setUserName(username);
 
 
         return repo.save(booking);
@@ -54,20 +65,19 @@ public class BookingService {
 
     }
 
-    public List<LocalTime> addSlots(Shop shop, Services service, User user, LocalDate date, LocalTime open, LocalTime close){
+    public List<LocalTime> addSlots(Services service, User user, LocalDate date){
 
-        List<Booking> bookings = repo.findByShopIdAndDayDate(shop.getId(), date);
+        List<Booking> bookings = repo.findByStaffIdAndDayDate(user.getStaffId(), date);
         List<LocalTime> slots = new ArrayList<>();
         Integer length = service.getLengthInMinutes();
 
-        slots.add(open);
+        slots.add(user.getStartTime());
 
-        LocalTime workTime = open;
+        LocalTime workTime = user.getStartTime();
 
         if(!date.isBefore(LocalDate.now())) {
 
-
-            while (workTime.isBefore(close) && workTime.plusMinutes(length).isBefore(close)) {
+            while (workTime.isBefore(user.getEndTime()) && workTime.plusMinutes(length).isBefore(user.getEndTime())) {
                 slots.add(workTime.plusMinutes(length));
                 workTime = workTime.plusMinutes(length);
             }

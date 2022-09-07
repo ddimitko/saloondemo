@@ -18,9 +18,11 @@
             <a class="nav-link" aria-current="shops" th:href="@{/shops}">Shops</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authentication="name"></a>
+            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_CUSTOMER')" sec:authentication="name"></a>
+            <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_WORKER')" th:text="${#authentication.getPrincipal().getFullName()}"></a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" th:href="@{/viewBookings(userId=${#authentication.getPrincipal().getId()})}">Recent Appointments</a></li>
+                <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_WORKER')">Go to Management</a></li>
+                <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_CUSTOMER')" th:href="@{/viewBookings(userId=${#authentication.getPrincipal().getId()})}">Recent Appointments</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
                 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
@@ -41,8 +43,10 @@
                     <input type="hidden" th:value="${date}" th:attr="name='dayDate'">
                     <input type="hidden" th:value="${list}" th:attr="name='timeDate'"/>
                     <input type="hidden" th:value="${shopInfo.id}" th:attr="name='shopId'"/>
+                    <input type="hidden" th:value="${staffId}" th:attr="name='staffId'"/>
                     <input type="hidden" th:value="${#authentication.getPrincipal().getId()}" th:attr="name='userId'"/>
-                    <input type="hidden" th:value="${#authentication.getPrincipal().getName()}" th:attr="name='username'"/>
+                    <input type="hidden" sec:authorize="hasAuthority('ROLE_CUSTOMER')" th:value="${#authentication.getPrincipal().getName()}" th:attr="name='username'"/>
+                    <input type="hidden" sec:authorize="hasAuthority('ROLE_WORKER')" th:value="${#authentication.getPrincipal().getFullName()}" th:attr="name='username'"/>
                     <input type="hidden" th:value="${serviceId}" th:attr="name='serviceId'"/>
                 </form>
             </div>

@@ -22,9 +22,13 @@ public class Booking {
 
     private Long shopId;
 
+    private String staffId;
+
     private Long userId;
 
-    private String username;
+    private String staffName;
+
+    private String userName;
 
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

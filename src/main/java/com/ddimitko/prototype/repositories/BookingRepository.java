@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -21,6 +22,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findAllByUserId(Long userId);
 
     ArrayList<Booking> findByShopIdAndDayDate(Long shopId, LocalDate date);
+
+    ArrayList<Booking> findByShopIdAndStaffIdAndDayDate(Long shopId, String staffId, LocalDate date);
+
+    ArrayList<Booking> findByStaffIdAndDayDate(String staffId, LocalDate date);
 
     Boolean existsByShopId(Long shopId);
 

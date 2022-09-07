@@ -8,12 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class UserService {
 
     @Autowired
@@ -37,7 +35,7 @@ public class UserService {
 
     public String getId(Authentication authentication){
         CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-        return principal.getStaffId();
+        return principal.getId();
     }
 
     public Optional<User> findById(Long id){

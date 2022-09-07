@@ -1,10 +1,14 @@
 package com.ddimitko.prototype.objects;
 
 import com.sun.istack.NotNull;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -13,6 +17,7 @@ import javax.persistence.*;
 public class User {
 
     @Id
+    @NotNull
     private String staffId;
 
     private String firstName;
@@ -25,7 +30,10 @@ public class User {
     private Shop shop;
 
     //Working hours for Staff
-    /*private LocalTime startTime;
-    private LocalTime endTime;*/
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime endTime;
 
 }

@@ -13,27 +13,12 @@
 <div class="container-fluid justify-content-center">
   <br>
   <h3><center>Please, log in to continue!</center></h3>
-  <a th:href="@{/oauth2/authorization/facebook}">Login with Facebook</a>
-  <form method="post" th:action="@{/login}">
-    <div class="d-flex justify-content-center mt-5">
-      <b>E-mail address</b>
-    </div>
-    <div class="d-flex justify-content-center">
-      <input class="form-control form-control-sm w-25" type="text" name="id" required aria-label=".form-control-sm example">
-    </div>
-    <div class="d-flex justify-content-center mt-2">
-      <b>Password</b>
-    </div>
-    <div class="d-flex justify-content-center">
-      <input class="form-control form-control-sm w-25" type="pass" name="password" required minlength="8" aria-label=".form-control-sm example">
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-      <p>You don't have an account yet?&nbsp;<a th:href="@{/signup}">Sign up</a>&nbsp;now!</p>
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-      <button type="submit" class="btn btn-dark">Login</button>
-    </div>
-  </form>
+  <div class="d-flex justify-content-center">
+    <a th:href="@{/oauth2/authorization/facebook}">Login with Facebook</a>
+  </div>
+  <div class="d-flex justify-content-center mt-3">
+    <p>Are you looking to manage your shop?&nbsp;Go to the <a th:href="@{/management}">Management</a>&nbsp;portal.</p>
+  </div>
 </div>
 
 </body>
