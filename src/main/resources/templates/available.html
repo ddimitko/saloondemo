@@ -39,9 +39,10 @@
         <div class="row row-cols-auto justify-content-center">
             <div class="col" th:each="list : ${slots}">
                 <form method="post" th:action="@{/book}" th:object="${booking}">
-                    <button type="submit" class="btn btn-secondary my-2" th:text="${list}"></button>
+                    <button type="submit" class="btn btn-secondary my-2" th:text="${list.key}"></button>
                     <input type="hidden" th:value="${date}" th:attr="name='dayDate'">
-                    <input type="hidden" th:value="${list}" th:attr="name='timeDate'"/>
+                    <input type="hidden" th:value="${list.key}" th:attr="name='startTime'"/>
+                    <input type="hidden" th:value="${list.value}" th:attr="name='endTime'"/>
                     <input type="hidden" th:value="${shopInfo.id}" th:attr="name='shopId'"/>
                     <input type="hidden" th:value="${staffId}" th:attr="name='staffId'"/>
                     <input type="hidden" th:value="${#authentication.getPrincipal().getId()}" th:attr="name='userId'"/>

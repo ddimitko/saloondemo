@@ -31,5 +31,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Boolean existsByShopIdAndDayDate(Long shopId, LocalDate date);
 
-    Boolean existsByShopIdAndDayDateAndTimeDate(Long shopId, LocalDate date, LocalTime time);
 }

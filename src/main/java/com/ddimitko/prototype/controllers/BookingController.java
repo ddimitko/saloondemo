@@ -7,6 +7,10 @@ import com.ddimitko.prototype.objects.User;
 import com.ddimitko.prototype.services.BookingService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
+
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,7 +55,7 @@ public class BookingController {
         }
 
 
-        List<LocalTime> slots = bookingService.addSlots(service, staff, date);
+        LinkedHashMap<LocalTime, LocalTime> slots = bookingService.addSlots(service, staff, date);
 
         model.addAttribute("shopInfo", shop);
         model.addAttribute("date", date);

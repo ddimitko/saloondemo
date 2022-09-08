@@ -8,12 +8,12 @@ import com.ddimitko.prototype.repositories.BookingRepository;
 import com.ddimitko.prototype.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.threeten.extra.Interval;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.function.Predicate;
 
 @Service
 public class BookingService {
@@ -65,26 +65,31 @@ public class BookingService {
 
     }
 
-    public List<LocalTime> addSlots(Services service, User user, LocalDate date){
+    public LinkedHashMap<LocalTime, LocalTime> addSlots(Services service, User user, LocalDate date){
 
         List<Booking> bookings = repo.findByStaffIdAndDayDate(user.getStaffId(), date);
-        List<LocalTime> slots = new ArrayList<>();
+        LinkedHashMap<LocalTime, LocalTime> slots = new LinkedHashMap<>();
         Integer length = service.getLengthInMinutes();
 
-        slots.add(user.getStartTime());
+        /*slots.add(user.getStartTime());*/
 
         LocalTime workTime = user.getStartTime();
+
 
         if(!date.isBefore(LocalDate.now())) {
 
             while (workTime.isBefore(user.getEndTime()) && workTime.plusMinutes(length).isBefore(user.getEndTime())) {
-                slots.add(workTime.plusMinutes(length));
+                slots.put(workTime, workTime.plusMinutes(length));
                 workTime = workTime.plusMinutes(length);
             }
 
 
+            //TODO: Fix this.
             for (Booking book : bookings) {
-                slots.removeIf(book.getTimeDate()::equals);
+
+                slots.keySet().removeIf(book.getStartTime()::equals);
+                slots.values().removeIf(book.getStartTime()::equals);
+
             }
 
         }
