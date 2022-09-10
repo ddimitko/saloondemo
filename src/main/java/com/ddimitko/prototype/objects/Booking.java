@@ -1,8 +1,11 @@
 package com.ddimitko.prototype.objects;
 
+import jdk.jfr.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.TypeDef;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.threeten.extra.Interval;
 
 import javax.persistence.*;
 import java.time.*;

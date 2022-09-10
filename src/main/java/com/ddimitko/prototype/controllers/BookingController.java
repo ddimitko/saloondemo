@@ -1,9 +1,6 @@
 package com.ddimitko.prototype.controllers;
 
-import com.ddimitko.prototype.objects.Booking;
-import com.ddimitko.prototype.objects.Services;
-import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.objects.User;
+import com.ddimitko.prototype.objects.*;
 import com.ddimitko.prototype.services.BookingService;
 import com.ddimitko.prototype.services.ShopService;
 import com.ddimitko.prototype.services.UserService;
@@ -19,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.threeten.extra.Interval;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

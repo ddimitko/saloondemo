@@ -1,9 +1,6 @@
 package com.ddimitko.prototype.services;
 
-import com.ddimitko.prototype.objects.Booking;
-import com.ddimitko.prototype.objects.Services;
-import com.ddimitko.prototype.objects.Shop;
-import com.ddimitko.prototype.objects.User;
+import com.ddimitko.prototype.objects.*;
 import com.ddimitko.prototype.repositories.BookingRepository;
 import com.ddimitko.prototype.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.threeten.extra.Interval;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Predicate;
@@ -68,33 +66,46 @@ public class BookingService {
     public LinkedHashMap<LocalTime, LocalTime> addSlots(Services service, User user, LocalDate date){
 
         List<Booking> bookings = repo.findByStaffIdAndDayDate(user.getStaffId(), date);
-        LinkedHashMap<LocalTime, LocalTime> slots = new LinkedHashMap<>();
+        List<Interval> slots = new LinkedList<>();
+        LinkedHashMap<LocalTime, LocalTime> slotsInLocal = new LinkedHashMap<>();
         Integer length = service.getLengthInMinutes();
 
-        /*slots.add(user.getStartTime());*/
-
-        LocalTime workTime = user.getStartTime();
-
+        ZonedDateTime zonedStart = ZonedDateTime.of(date, user.getStartTime(), ZoneId.systemDefault());
+        ZonedDateTime zonedEnd = ZonedDateTime.of(date, user.getEndTime(), ZoneId.systemDefault());
 
         if(!date.isBefore(LocalDate.now())) {
 
-            while (workTime.isBefore(user.getEndTime()) && workTime.plusMinutes(length).isBefore(user.getEndTime())) {
-                slots.put(workTime, workTime.plusMinutes(length));
-                workTime = workTime.plusMinutes(length);
+            while (zonedStart.isBefore(zonedEnd) && zonedStart.plusMinutes(length).isBefore(zonedEnd)) {
+                Interval duration = Interval.of(zonedStart.toInstant(), zonedStart.plusMinutes(length).toInstant());
+                slots.add(duration);
+                zonedStart = zonedStart.plusMinutes(length);
             }
 
-
-            //TODO: Fix this.
             for (Booking book : bookings) {
 
-                slots.keySet().removeIf(book.getStartTime()::equals);
-                slots.values().removeIf(book.getStartTime()::equals);
+                ZonedDateTime zonedBookStart = ZonedDateTime.of(date, book.getStartTime(), ZoneId.systemDefault());
+                ZonedDateTime zonedBookEnd = ZonedDateTime.of(date, book.getEndTime(), ZoneId.systemDefault());
+
+                Instant instantStart = Instant.from(zonedBookStart);
+                Instant instantEnd = Instant.from(zonedBookEnd);
+
+                Interval interval = Interval.of(instantStart, instantEnd);
+
+                slots.removeIf(interval::overlaps);
 
             }
 
         }
 
-        return slots;
+        for(Interval slot : slots){
+
+            LocalTime representationStart = LocalTime.ofInstant(slot.getStart(), ZoneId.systemDefault());
+            LocalTime representationEnd = LocalTime.ofInstant(slot.getEnd(), ZoneId.systemDefault());
+            slotsInLocal.put(representationStart, representationEnd);
+
+        }
+
+        return slotsInLocal;
     }
 
 }
