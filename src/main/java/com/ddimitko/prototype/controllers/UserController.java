@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteBooking")
-    public String deleteBooking(@RequestParam(value="bookingId") Long bookingId){
+    public void deleteBooking(@RequestParam(value="bookingId") Long bookingId){
 
         Booking booking = new Booking();
         if(bookingService.findById(bookingId).isPresent()){
@@ -54,7 +54,6 @@ public class UserController {
 
         bookingService.deleteBooking(booking);
 
-        return "redirect:/home";
     }
 
     /*@PutMapping("/editProfile")

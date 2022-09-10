@@ -46,6 +46,10 @@ public class UserService {
         return repo.findByStaffId(staffId);
     }
 
+    public List<User> findAllByShopId(Long shopId){
+        return repo.findAllByShopId(shopId);
+    }
+
     public User createUser(User user){
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

@@ -32,6 +32,14 @@ public class BookingService {
         return repo.findAllByUserId(userId);
     }
 
+    public List<Booking> findAllByStaffId(String staffId){
+        return repo.findAllByStaffId(staffId);
+    }
+
+    public List<Booking> findAllByShopId(Long shopId){
+        return repo.findAllByShopId(shopId);
+    }
+
     public Optional<Booking> findById(Long id){
         return repo.findById(id);
     }

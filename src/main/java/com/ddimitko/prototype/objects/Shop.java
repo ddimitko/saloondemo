@@ -27,6 +27,8 @@ public class Shop {
     @ManyToOne
     private City city;
 
+    private String ownerId;
+
     @OneToMany(mappedBy = "shop")
     private List<User> staff;
 

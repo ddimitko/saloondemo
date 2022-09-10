@@ -50,11 +50,11 @@
             <input type="time" th:field="*{startTime}">
             <input type="time" th:field="*{endTime}">
         </div>
-        <div class="d-flex justify-content-center mt-2">
+        <!--<div class="d-flex justify-content-center mt-2">
             <select class="form-control form-control-sm w-25 text-center" th:field="*{shop}">
                 <option th:each="shopList : ${shopList}" th:value="${shopList.id}" th:text="${shopList.name}"></option>
             </select>
-        </div>
+        </div>-->
         <div class="d-flex justify-content-center mt-3">
             <p>You already have an account?&nbsp;<a th:href="@{/login}">Log in</a>&nbsp;now!</p>
         </div>

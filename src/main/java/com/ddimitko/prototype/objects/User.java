@@ -36,4 +36,6 @@ public class User {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
+    private Boolean isOwner;
+
 }

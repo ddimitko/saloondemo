@@ -24,5 +24,24 @@
     </li>
 </ul>
 
+<div class="container-fluid justify-content-center">
+    <div class="d-flex justify-content-center">
+        <h5 th:each="staffList : ${staff}" th:text="${staffList.getFirstName()} + ' ' + ${staffList.getLastName()}"></h5>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="card text-center mt-2 w-100">
+            <div class="card-body" th:each="bookingsList : ${bookings}">
+                <form th:action="@{/deleteBooking(bookingId=${bookingsList.getId()})}" th:method="delete">
+                    <h5 class="card-title" th:text="${bookingsList.getUserName()}"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${bookingsList.getServiceId()}"></h6>
+                    <p class="card-text"><small class="text-muted" th:text="${bookingsList.getDayDate()} + ' ' + ${bookingsList.getStartTime()} + ' - ' + ${bookingsList.getEndTime()}"></small></p>
+                    <p class="card-text"><small class="text-muted" th:text="${bookingsList.getStaffName()}"></small></p>
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

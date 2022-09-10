@@ -25,9 +25,6 @@ public class ShopService {
     @Autowired
     ServicesRepository servicesRepo;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
 
     public List<Shop> findAll(){
         return repo.findAll();
@@ -43,7 +40,9 @@ public class ShopService {
 
     public Shop addShop(Shop shop){
 
-        if(!shop.getName().equals(null) && !shop.getCity().equals(null) && !shop.getType().equals(null)){
+        if(!shop.getName().equals(null) && !shop.getCity().equals(null) && !shop.getType().equals(null) && !shop.getOwnerId().isEmpty()){
+            userRepo.findByStaffId(shop.getOwnerId()).get().setIsOwner(true);
+            userRepo.findByStaffId(shop.getOwnerId()).get().setShop(shop);
 
             return repo.save(shop);
         }

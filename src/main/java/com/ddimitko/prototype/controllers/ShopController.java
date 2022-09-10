@@ -53,7 +53,7 @@ public class ShopController {
         model.addAttribute("shop", new Shop());
         model.addAttribute("city", cityService.findAll());
         model.addAttribute("type", typeService.findAll());
-        model.addAttribute("staff", userService.findAll());
+        model.addAttribute("owner", userService.findAll());
 
         return "addShop";
     }
