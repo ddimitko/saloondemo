@@ -39,7 +39,7 @@
                             <div class="card-body">
                                 <h6 th:text="${books.shopId}"></h6>
                                 <p class="card-text text-muted" th:text="${books.serviceId}"></p>
-                                <p class="card-text"><small class="text-muted" th:text="${books.dayDate} + ' ' + ${books.timeDate}"></small></p>
+                                <p class="card-text"><small class="text-muted" th:text="${books.dayDate} + ' ' + ${books.startTime} + ' - ' + ${books.endTime}"></small></p>
                                 <input type="submit" class="btn btn-danger" value="Delete">
                             </div>
                         </div>

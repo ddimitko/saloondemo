@@ -21,7 +21,7 @@
             <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_CUSTOMER')" sec:authentication="name"></a>
             <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_WORKER')" th:text="${#authentication.getPrincipal().getFullName()}"></a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_WORKER')">Go to Management</a></li>
+                <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_WORKER')" th:href="@{/management}">Go to Management</a></li>
                 <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_CUSTOMER')" th:href="@{/viewBookings(userId=${#authentication.getPrincipal().getId()})}">Recent Appointments</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>

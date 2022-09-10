@@ -14,7 +14,7 @@
     <li class="nav-item">
         <a class="nav-link dropdown-toggle text-muted" data-bs-toggle="dropdown" role="button" aria-expanded="false" sec:authorize="hasAuthority('ROLE_WORKER')" th:text="${#authentication.getPrincipal().getFullName()}"></a>
         <ul class="dropdown-menu">
-        <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_WORKER')">Go Home</a></li>
+        <li><a class="dropdown-item" sec:authorize="hasAuthority('ROLE_WORKER')" th:href="@{/home}">Go Home</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
         <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
