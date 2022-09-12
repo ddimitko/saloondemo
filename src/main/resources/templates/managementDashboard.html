@@ -25,20 +25,73 @@
 </ul>
 
 <div class="container-fluid justify-content-center">
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" th:if="${#authentication.getPrincipal().getIsOwner() == true}">
         <h5 th:each="staffList : ${staff}" th:text="${staffList.getFirstName()} + ' ' + ${staffList.getLastName()}"></h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add staff member
+        </button>
+
     </div>
     <div class="d-flex justify-content-center">
         <div class="card text-center mt-2 w-100">
             <div class="card-body" th:each="bookingsList : ${bookings}">
-                <form th:action="@{/deleteBooking(bookingId=${bookingsList.getId()})}" th:method="delete">
                     <h5 class="card-title" th:text="${bookingsList.getUserName()}"></h5>
                     <h6 class="card-subtitle mb-2 text-muted" th:text="${bookingsList.getServiceId()}"></h6>
                     <p class="card-text"><small class="text-muted" th:text="${bookingsList.getDayDate()} + ' ' + ${bookingsList.getStartTime()} + ' - ' + ${bookingsList.getEndTime()}"></small></p>
                     <p class="card-text"><small class="text-muted" th:text="${bookingsList.getStaffName()}"></small></p>
+                <form th:action="@{/deleteBooking(bookingId=${bookingsList.getId()})}" th:method="delete">
                     <input type="submit" class="btn btn-danger" value="Delete">
                 </form>
+                <a th:href="@{/management/editBooking(bookId=${bookingsList.getId()})}" class="btn btn-secondary">Change</a>
+                   <!-- <button type="button" class="btn btn-secondary" data-bs-toggle="modal" th:attr="data-bs-target=${'#changeModal' + bookingsList.getId()}"></button>
+                <div class="modal fade" th:attr="${'changeModal' + bookingsList.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Booking</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-body">
+                                    <div class="col" th:each="list : ${slots}">
+                                        <form method="put" th:action="@{/changeBooking(bookingId=${bookingsList.getId()}, startTime=${list.key}, endTime=${list.value})}" th:object="${booking}">
+                                            <button type="submit" class="btn btn-secondary my-2" th:text="${list.key}"></button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Change booking</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
             </div>
+        </div>
+    </div>
+</div>
+<div th:if="${#authentication.getPrincipal().getIsOwner() == true}" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Assign staff to your shop...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:method="put" th:action="@{/management/addStaff(shopId=${#authentication.getPrincipal().getShop().getId()})}">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <select class="form-control form-control-sm w-25 text-center" th:value="${date}" th:attr="name='staffId'">
+                            <option th:each="staff : ${addStaff}" th:value="${staff.staffId}" th:text="${staff.firstName + ' ' + staff.lastName}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

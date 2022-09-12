@@ -11,11 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.threeten.extra.Interval;
 
 import java.time.LocalDate;
@@ -70,6 +69,16 @@ public class BookingController {
         bookingService.createBooking(shopId, staffId, userId, serviceId, username, booking);
 
         return "redirect:/shops";
+    }
+
+    @PutMapping("/changeBooking")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void changeBooking(@RequestParam(value="bookingId") Long bookingId,
+                              @RequestParam(value="startTime") @DateTimeFormat(pattern = "HH:mm") LocalTime start,
+                              @RequestParam(value="endTime") @DateTimeFormat(pattern = "HH:mm") LocalTime end) throws Exception {
+
+        bookingService.changeBooking(bookingId, start, end);
+
     }
 
 }

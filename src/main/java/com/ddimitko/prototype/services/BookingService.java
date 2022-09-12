@@ -2,6 +2,8 @@ package com.ddimitko.prototype.services;
 
 import com.ddimitko.prototype.objects.*;
 import com.ddimitko.prototype.repositories.BookingRepository;
+import com.ddimitko.prototype.repositories.ServicesRepository;
+import com.ddimitko.prototype.repositories.ShopRepository;
 import com.ddimitko.prototype.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,12 @@ public class BookingService {
 
     @Autowired
     BookingRepository repo;
+
+    @Autowired
+    ShopRepository shopRepo;
+
+    @Autowired
+    ServicesRepository serviceRepo;
 
     @Autowired
     UserRepository userRepo;
@@ -114,6 +122,46 @@ public class BookingService {
         }
 
         return slotsInLocal;
+    }
+
+    public LinkedHashMap<LocalTime, LocalTime> addSlotsOnBooking(Booking booking){
+
+        if(repo.findById(booking.getId()).isPresent()) {
+            booking = repo.findById(booking.getId()).get();
+        }
+
+        Services service = new Services();
+        if(serviceRepo.findById(booking.getServiceId()).isPresent()){
+            service = serviceRepo.findById(booking.getServiceId()).get();
+        }
+
+        User staff= new User();
+        if(userRepo.findByStaffId(booking.getStaffId()).isPresent()){
+            staff = userRepo.findByStaffId(booking.getStaffId()).get();
+        }
+
+        LinkedHashMap<LocalTime, LocalTime> slots = addSlots(service, staff, booking.getDayDate());
+
+        return slots;
+
+    }
+
+    public void changeBooking(Long bookId, LocalTime start, LocalTime end) throws Exception {
+
+        Booking booking = new Booking();
+
+        if(repo.findById(bookId).isPresent()){
+            booking = repo.findById(bookId).get();
+
+            booking.setStartTime(start);
+            booking.setEndTime(end);
+            repo.save(booking);
+        }
+        else{
+            throw new Exception("Booking not found!");
+        }
+
+
     }
 
 }

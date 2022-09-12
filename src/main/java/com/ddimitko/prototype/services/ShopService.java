@@ -53,38 +53,21 @@ public class ShopService {
 
     }
 
-/*    public void assignStaff(Long shopId, Long userId, String startTime, String endTime){
-
-        Shop shop = new Shop();
-        if(findById(shopId).isPresent()){
-            shop = findById(shopId).get();
-        }
-
-        LocalTime start = LocalTime.parse(startTime);
-        LocalTime end = LocalTime.parse(endTime);
+    public void addStaff(Long shopId, String staffId){
 
         User user = new User();
-        Staff staff = new Staff();
-        if(userRepo.findById(userId).isPresent()){
-            userRepo.findById(userId).get();
-            if(staffRepo.findById(userId).isEmpty()){
-                staff.setShopId(shopId);
-                staff.setId(userId);
-                staff.setStartTime(start);
-                staff.setEndTime(end);
-                staff.setFirstName(user.getFirstName());
-                staff.setLastName(user.getLastName());
-                staff.setEmail(user.getEmail());
-                staff.setPassword(user.getPassword());
-                staffRepo.save(staff);
-            }
+        if(userRepo.findByStaffId(staffId).isPresent()){
+            user = userRepo.findByStaffId(staffId).get();
         }
 
-        shop.getStaff().add(staff);
+        Shop shop = new Shop();
+        if(repo.findById(shopId).isPresent()){
+            shop = repo.findById(shopId).get();
+        }
 
-    }*/
+        user.setShop(shop);
+        userRepo.save(user);
 
-
-
+    }
 
 }

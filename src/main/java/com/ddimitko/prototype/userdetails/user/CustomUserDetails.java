@@ -1,5 +1,6 @@
 package com.ddimitko.prototype.userdetails.user;
 
+import com.ddimitko.prototype.objects.Shop;
 import com.ddimitko.prototype.objects.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -70,5 +71,13 @@ public class CustomUserDetails implements UserDetails {
 
     public String getId() {
         return user.getStaffId();
+    }
+
+    public Boolean getIsOwner(){
+        return user.getIsOwner();
+    }
+
+    public Shop getShop(){
+        return user.getShop();
     }
 }

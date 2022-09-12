@@ -33,9 +33,6 @@
     </ul>
 
     <div class="container-fluid">
-
-
-
         <div class="row row-cols-auto justify-content-center">
             <div class="col" th:each="list : ${slots}">
                 <form method="post" th:action="@{/book}" th:object="${booking}">

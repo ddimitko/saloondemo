@@ -38,6 +38,11 @@ public class UserService {
         return principal.getId();
     }
 
+    public Boolean getIsOwner(Authentication authentication){
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        return principal.getIsOwner();
+    }
+
     public Optional<User> findById(Long id){
         return repo.findById(id);
     }
